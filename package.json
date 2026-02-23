@@ -1,0 +1,86 @@
+{
+  "name": "intentx-react",
+  "version": "0.1.0",
+  "description": "React adapter for intentx-runtime. Intent-first, deterministic business logic orchestration with a headless runtime.",
+  "license": "MIT",
+  "author": "Delpi.Kye",
+  "sideEffects": false,
+  "type": "module",
+
+  "main": "build/index.cjs.js",
+  "module": "build/index.esm.js",
+  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "import": "./build/index.esm.js",
+      "require": "./build/index.cjs.js"
+    }
+  },
+  "files": [
+    "build"
+  ],
+
+  "scripts": {
+    "clean": "rimraf build",
+    "build": "rollup -c",
+    "cb": "npm run clean && npm run build",
+    "prepublishOnly": "npm run cb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/delpikye-v/intentx-react.git"
+  },
+  "homepage": "https://github.com/delpikye-v/intentx-react#readme",
+  "bugs": {
+    "url": "https://github.com/delpikye-v/intentx-react/issues"
+  },
+
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/delpikye-v"
+  },
+
+  "keywords": [
+    "intent",
+    "intent-first",
+    "business-logic",
+    "logic-runtime",
+    "deterministic",
+    "orchestration",
+    "headless",
+    "framework-agnostic",
+    "react",
+    "react-state",
+    "react-architecture",
+    "external-store",
+    "computed-state",
+    "derived-state",
+    "async-orchestration",
+    "event-driven",
+    "state-management"
+  ],
+
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.5",
+    "rollup": "^4.9.6",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "intentx-runtime": "^0.1.2"
+  }
+}
