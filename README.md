@@ -1,17 +1,17 @@
-# 🧩 intentx-react
+# ⚛️⚡ intentx-react
 
 [![NPM](https://img.shields.io/npm/v/intentx-react.svg)](https://www.npmjs.com/package/intentx-react) ![Downloads](https://img.shields.io/npm/dt/intentx-react.svg)
 
 <a href="https://codesandbox.io/p/sandbox/7tgzxw" target="_blank">LIVE EXAMPLE</a>
 
-Official React adapter for **intentx-runtime**.   
+Official React adapter for **intentx-runtime**.
 Designed for deterministic orchestration across UI, backend, and workers.
 
 > Intent-first business logic. React is just a view layer.
 
 ---
 
-## 🧠 What is intentx?
+## ✨ Why intentx?
 
 `intentx-runtime` is a deterministic, intent-driven business logic runtime.
 
@@ -29,7 +29,7 @@ React is optional.
 
 ---
 
-## 🏗 Mental Model
+## 🧠  Mental Model
 
 ```
 UI / HTTP / Queue / Cron
@@ -304,7 +304,9 @@ useLogic(userLogic, "user", bus)
 ---
 
 
-## 🧭 Comparison (Conceptual)
+## 🔍 Comparison
+
+This is not about “better” — it's about architectural intent.
 
 | Criteria                       | intentx-runtime | Redux Toolkit  | Zustand | MobX         | Recoil |
 |--------------------------------|----------------|-----------------|---------|---------------|--------|
@@ -335,7 +337,7 @@ intentx answers:
 
 ---
 
-## 🎯 When To Use
+## 🔥 Philosophy
 
 Use this if:
 
@@ -352,6 +354,6 @@ Do not use this if:
 
 ---
 
-## 🪪 License
+## 📜 License
 
 MIT
