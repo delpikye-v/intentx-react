@@ -1,29 +1,31 @@
-# ⚛️⚡ intentx-react
+## ⚛️⚡ intentx-react
 
 [![NPM](https://img.shields.io/npm/v/intentx-react.svg)](https://www.npmjs.com/package/intentx-react) ![Downloads](https://img.shields.io/npm/dt/intentx-react.svg)
 
 <a href="https://codesandbox.io/p/sandbox/7tgzxw" target="_blank">LIVE EXAMPLE</a>
 
-Official React adapter for **intentx-runtime**.
-Designed for deterministic orchestration across UI, backend, and workers.
+`intentx-react` is an architectural layer for react.
 
-> Intent-first business logic. React is just a view layer.
+It enforces a strict separation between:
+
+- Business Logic (deterministic runtime)
+- UI Rendering (fine-grained reactivity)
+
+> It is a bridge between deterministic logic and React’s reactive UI.
 
 ---
 
-## ✨ Why intentx?
-
-`intentx-runtime` is a deterministic, intent-driven business logic runtime.
+## ✨ Why intentx-react?
 
 `intentx-react` is a thin React binding on top of that runtime.
 
-You can use the runtime:
+Use it when your UI starts to feel like business logic.
 
-- In React
-- In Node.js
-- In workers
-- In tests
-- Without any UI
+✅ Complex async workflows  
+✅ Intent-based architecture  
+✅ Microfrontend communication  
+✅ Testable business logic  
+✅ Cross-framework runtime reuse  
 
 React is optional.
 
@@ -31,24 +33,18 @@ React is optional.
 
 ## 🧠  Mental Model
 
-```
+```txt
 UI / HTTP / Queue / Cron
         ↓
-     emit(intent)
+  intentx-runtime
         ↓
-   middleware / effects
-        ↓
-   intent handlers
-        ↓
-     mutate state
-        ↓
- computed (derived state)
+Fine-grained reactivity updates UI
 ```
 
 Core principle:
 
 > Intent is the only mutation entry point.
-> The runtime owns behavior. UI only triggers intent.
+> The [runtime](https://www.npmjs.com/package/intentx-runtime) owns behavior. UI only triggers intent.
 
 ---
 
@@ -228,88 +224,99 @@ expect(runtime.state.squared).toBe(16)
 
 ---
 
-## 🔄 Multiple Logic Communication
+## 📡  Multiple Logic Communication (Bus)
 
-Multiple runtime instances can communicate through a shared intent bus.
+Each `logic` instance is isolated by default.
 
-By default, each `useLogic` call is fully isolated.  
-To enable communication, you can share a bus.
+To enable communication between runtimes, you can share an Intent Bus.
 
 ---
 
-#### 1️⃣ Scoped Global Bus
-
-When `sharedBus = true`, runtimes share a bus **within the same scope**.
+### 1️⃣ Scoped Shared Bus (Recommended)
 
 ```ts
 import { useLogic } from "intentx-react"
 
 // ✅ Same scope → shared bus
-useLogic(counterLogic, "app", true)
-useLogic(userLogic, "app", true)
+useLogic(logic, {
+  scope: "dashboard",
+  sharedBus: true
+})
 
-// ❌ Different scope → isolated
-useLogic(counterLogic, "counter", true)
-useLogic(userLogic, "user", true)
+// ❌ Different scope → different bus
+useLogic(logic, {
+  scope: "settings",
+  sharedBus: true
+})
 ```
 
-<b>Behavior</b>
+<b>How it works</b>
 
-- Same scope → runtimes can emit/listen to each other
+When sharedBus: true is enabled:
 
-- Different scope → fully isolated
+- A singleton bus is created per scope
+
+- Same scope → same bus instance
+
+- Different scope → different bus
 
 - No global leakage
 
-This is the recommended way for modular communication.
+If no `scope` is provided:
+
+```ts
+useLogic(logic, {
+  sharedBus: true
+})
+```
+
+→ uses a default global scope bus.
 
 ---
 
-#### 2️⃣ Custom Bus (Advanced)
+### 2️⃣ Custom Bus (Advanced / Cross-Scope)
 
 ```ts
-import { createIntentBus, useLogic } from "intentx-react"
+import { createIntentBus } from "intentx-react"
 
 const bus = createIntentBus()
 
-useLogic(counterLogic, "counter", bus)
-useLogic(userLogic, "user", bus)
+useLogic(logicA, { bus })
+useLogic(logicB, { bus })
+
 ```
 
 <b>Behavior</b>
 
-- Cross-scope communication
-- Explicit orchestration control
-- Useful for complex workflows or app-wide coordination
+- Full cross-scope communication
+- Manual orchestration control
+- Suitable for:
+  - Microfrontend
+  - App-wide coordination
+  - Complex workflow systems
+
+### Behavior Comparison
+
+| Mode                 | Isolation    | Scope-aware | Cross-scope  | Recommended           |
+| -------------------- | -----------  | ----------- | ------------ | --------------------- |
+| Default (no options) | ✅ Full      | ❌           | ❌           | Small/local logic     |
+| `sharedBus: true`    | ❌ Per scope | ✅           | ❌           | Modular apps          |
+| Custom `bus`         | ❌ Manual    | ❌           | ✅           | Advanced architecture |
+
+### 🎯 Recommendation
+
+✅ Use sharedBus for modular communication.  
+✅ Use custom bus for orchestration layer.  
+🚫 Avoid global single bus without scope in large apps.  
 
 ---
-
-#### 🧠 Communication Modes
-
-| Mode                            | Isolation | Cross Logic | Control |
-| ------------------------------- | --------- | ----------- | ------- |
-| Default                         | ✅ Full    | ❌ No        | Low     |
-| `sharedBus = true` (same scope) | ⚖ Scoped  | ✅ Yes       | Medium  |
-| Custom bus instance             | ❌ Manual  | ✅ Yes       | High    |
-
-
-<br />
-
-<b>⚠️ Important Notes</b>
-
-- sharedBus = true shares by scope, not globally.
-- Passing a bus instance overrides scope behavior.
-- Scope and bus are immutable after mount.
-
----
-
 
 ## 🔍 Comparison
 
 This is not about “better” — it's about architectural intent.
 
-| Criteria                       | intentx-runtime | Redux Toolkit  | Zustand | MobX         | Recoil |
-|--------------------------------|----------------|-----------------|---------|---------------|--------|
+| Criteria                       | intentx-react  | Redux Toolkit  | Zustand  | MobX          | Recoil |
+|--------------------------------|----------------|----------------|----------|---------------|--------|
 | **Primary abstraction**        | 🟢 Intent      | 🟢 Reducer      | 🟢 Store | 🟢 Observable | 🟢 Atom |
 | **Single mutation entry**      | ✅             | ✅              | ❌       | ❌            | ❌     |
 | **Built-in orchestration**     | ✅             | ⚠️ (middleware) | ❌       | ⚠️            | ❌     |

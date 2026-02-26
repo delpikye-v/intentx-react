@@ -1,6 +1,6 @@
 {
   "name": "intentx-react",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React adapter for intentx-runtime. Intent-first, deterministic business logic orchestration with a headless runtime.",
   "license": "MIT",
   "author": "Delpi.Kye",
@@ -27,6 +27,7 @@
     "cb": "npm run clean && npm run build",
     "prepublishOnly": "npm run cb"
   },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/delpikye-v/intentx-react.git"
@@ -35,7 +36,6 @@
   "bugs": {
     "url": "https://github.com/delpikye-v/intentx-react/issues"
   },
-
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/delpikye-v"
@@ -81,6 +81,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "intentx-runtime": "^0.2.0"
+    "intentx-runtime": "^0.2.3"
   }
 }
