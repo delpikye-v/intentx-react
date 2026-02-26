@@ -1,6 +1,6 @@
 {
   "name": "intentx-react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "React adapter for intentx-runtime. Intent-first, deterministic business logic orchestration with a headless runtime.",
   "license": "MIT",
   "author": "Delpi.Kye",
@@ -81,6 +81,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "intentx-runtime": "^0.2.3"
+    "intentx-runtime": "^0.2.4"
   }
 }
